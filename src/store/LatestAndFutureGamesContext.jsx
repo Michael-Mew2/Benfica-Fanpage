@@ -71,20 +71,24 @@ export default function LatestAndFutureGamesProvider({ children }) {
       console.log("#######################",closeGames);
       
       if (checkGame) {
-        const _closeGames = [...closeGames]
-        console.log("Liga:", _closeGames);
-
+        const _closeGames = [...closeGames];
+        const foundGames = [];
+        
         setComingLeagueGame(checkGame);
         if (checkGame && (_closeGames.filter((match) => match.id == checkGame[0].id).length === 0)) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          _closeGames.push(checkGame)
+          foundGames.push(checkGame)
         }
+        console.warn("Found Game:", foundGames);
         setLatestLeagueGame(lastLeagueGame);
         if (lastLeagueGame && (_closeGames.filter((match) => match.id == lastLeagueGame.id).length === 0)) {
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
-          _closeGames.push(lastLeagueGame);
+          foundGames.push(lastLeagueGame);
         }
-        setCloseGames(_closeGames);
+        console.warn("Found Game:", foundGames);
+        console.warn("Liga:", _closeGames);
+        
+        setCloseGames([...closeGames, ...foundGames]);
       }
     } catch (error) {
       console.error("Fehler beim Abrufen des Spiels:", error);
@@ -139,21 +143,22 @@ export default function LatestAndFutureGamesProvider({ children }) {
       
       if (checkGame) {
         const _closeGames = [...closeGames]
-        console.log("Champions League:", _closeGames);
-
+        const foundGames = [];
+        
         setComingLeagueGame(checkGame);
         if (checkGame && (_closeGames.filter((match) => match.id == checkGame[0].id).length === 0)) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          _closeGames.push(checkGame);
+          foundGames.push(checkGame);
           
         }
         setLatestLeagueGame(lastLeagueGame);
         if (lastLeagueGame && (_closeGames.filter((match) => match.id == lastLeagueGame.id).length === 0)) {
-          _closeGames.push(lastLeagueGame);
+          foundGames.push(lastLeagueGame);
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
         }
         console.log("## ## _closeGames:", _closeGames);
-        setCloseGames(_closeGames);
+        console.log("Champions League:", _closeGames);
+        setCloseGames([...closeGames, ...foundGames]);
       }
     } catch (error) {
       console.error("Fehler beim Abrufen des Spiels:", error);
@@ -207,19 +212,20 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
       if (checkGame) {
         const _closeGames = [...closeGames]
-        console.log("Pokal:", _closeGames);
-
+        const foundGames = []
+        
         setComingLeagueGame(checkGame);
         if (checkGame && (_closeGames.filter((match) => match.id == checkGame[0].id).length === 0)) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          _closeGames.push(checkGame)
+          foundGames.push(checkGame)
         }
         setLatestLeagueGame(lastLeagueGame);
         if (lastLeagueGame && (_closeGames.filter((match) => match.id == lastLeagueGame.id).length === 0)) {
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
-          _closeGames.push
+          foundGames.push
         }
-        setCloseGames(_closeGames)
+        console.log("Pokal:", _closeGames);
+        setCloseGames([...closeGames, ...foundGames])
       }
     } catch (error) {
       console.error("Fehler beim Abrufen des Spiels:", error);
@@ -273,20 +279,23 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
       if (checkGame) {
         const _closeGames = [...closeGames]
+        const foundGames = [];
         console.log("Liga Pokal:", _closeGames);
         
         setComingLeagueGame(checkGame);
         if (checkGame && (_closeGames.filter((match) => match.id == checkGame[0].id).length === 0)) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          _closeGames.push(checkGame)
+          foundGames.push(checkGame)
+
         }
         setLatestLeagueGame(lastLeagueGame);
         if (lastLeagueGame && (_closeGames.filter((match) => match.id == lastLeagueGame.id).length === 0)) {
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
-          _closeGames.push(lastLeagueGame)
+          foundGames.push(lastLeagueGame)
         }
         
-        setCloseGames(_closeGames);
+        setCloseGames([...closeGames, ...foundGames]);
+        console.warn("#############:", _closeGames)
 
       }
     } catch (error) {

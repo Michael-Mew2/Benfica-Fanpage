@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { InitialContext } from "../../store/InitialContext";
 import { LatestAndFutureGamesContext } from "../../store/LatestAndFutureGamesContext";
+import styles from "./Hero.module.css";
 
 // ----------
 
@@ -34,7 +35,7 @@ export default function () {
     const fetchAndProcessData = async () => {
       await checkLeagueGames();
       await checkCLGames();
-      await checkCupGames();
+      // await checkCupGames();
       await checkLeagueCupGames();
     };
 
@@ -59,23 +60,23 @@ export default function () {
   // ==========
 
   return (
-    <div>
-      <div className="blur">
+    <div className={styles.hero}>
+      <div className={styles.blur}>
         <h1>Willkommen im roten Inferno</h1>
-      </div>
-      <div className="quickStats">
-        <ul>
-          <li>
-            {closeGames.map((game, i) => (
-              <div key={i}>
-                <h2>{game.strEvent}</h2>
-                <p>
-                  {game.strLeague} Spieltag: {game.intRound}
-                </p>
-              </div>
-            ))}
-          </li>
-        </ul>
+        <div className="quickStats">
+          <ul>
+            <li>
+              {closeGames.map((game, i) => (
+                <div key={i}>
+                  <h2>{game.strEvent}</h2>
+                  <p>
+                    {game.strLeague} Spieltag: {game.intRound}
+                  </p>
+                </div>
+              ))}
+            </li>
+          </ul>
+        </div>
       </div>
     </div>
   );

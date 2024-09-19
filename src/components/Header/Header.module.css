@@ -1,0 +1,9 @@
+.header {
+    width: 100vw;
+    position: fixed;
+    z-index: 1;
+    height: 10vh;
+    background: #ca0603;
+    background: -webkit-linear-gradient(0deg, #ca0603 0.5%, #6b6b6b00 100%);
+    background: linear-gradient(0deg, #ca060300 0.5%, #30303076 100%);
+}
