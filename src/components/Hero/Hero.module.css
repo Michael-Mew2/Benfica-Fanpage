@@ -24,4 +24,9 @@
         color: white;
         padding-left: 35px;
     }
+
+    .quickStats {
+        border: 2px solid lime;
+        height: 15vh;
+    }
 }

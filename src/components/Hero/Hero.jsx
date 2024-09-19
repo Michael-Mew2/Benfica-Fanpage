@@ -63,7 +63,7 @@ export default function () {
     <div className={styles.hero}>
       <div className={styles.blur}>
         <h1>Willkommen im roten Inferno</h1>
-        <div className="quickStats">
+        <div className={styles.quickStats}>
           <ul>
             <li>
               {closeGames.map((game, i) => (
