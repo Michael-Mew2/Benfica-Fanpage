@@ -1,4 +1,4 @@
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useContext, useEffect, useRef } from "react";
 import { InitialContext } from "./InitialContext";
 
 export const LatestAndFutureGamesContext = createContext();
@@ -25,14 +25,16 @@ export default function LatestAndFutureGamesProvider({ children }) {
   // Close games in all Competitions:
   const [closeGames, setCloseGames] = useState([]);
 
+  const NewCloseGames = useRef([]);
 
   useEffect(() => {
-    console.log("## Close Games:", closeGames);
+    // console.log("## Close Games:", closeGames);
 }, [closeGames])
 
   // ----------
   // Primeira Liga:
   const checkLeagueGames = async () => {
+    NewCloseGames.current = [];
     const leagueId = "4344";
 
     if (!lastHomeGames || !lastHomeGames.results) return;
@@ -62,29 +64,33 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
         lastLeagueGame = checkGame;
         checkGameId++;
-        console.log("innerLeagueGame", lastLeagueGame);
 
         checkGame = await fetchCheckGame(leagueId, checkGameId);
-        
       }
-
-      console.log("#######################",closeGames);
       
       if (checkGame) {
-        const _closeGames = [...closeGames]
-        console.log("Liga:", _closeGames);
-
-        setComingLeagueGame(checkGame);
-        if (checkGame && (_closeGames.filter((match) => match.id == checkGame[0].id).length === 0)) {
-          // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          _closeGames.push(checkGame)
+        console.log({checkGame});
+        
+        setComingLeagueGame(checkGame);        
+        if (NewCloseGames.current.length === 0){
+          NewCloseGames.current.push(...checkGame)
+          
+          // NewCloseGames.current.push(...checkGame)
         }
+        // if (checkGame && closeGames.find(match => match.id == checkGame[0].id)){
+        //   // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
+        //   console.log("in find one");
+          
+        //   NewCloseGames.current.push(checkGame)
+        // }
         setLatestLeagueGame(lastLeagueGame);
-        if (lastLeagueGame && (_closeGames.filter((match) => match.id == lastLeagueGame.id).length === 0)) {
+        if (lastLeagueGame && NewCloseGames.current.find(match => match.id == lastLeagueGame.id)) {
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
-          _closeGames.push(lastLeagueGame);
+          // NewCloseGames.current.push(lastLeagueGame);
         }
-        setCloseGames(_closeGames);
+        // setCloseGames(NewCloseGames.current);
+        console.log("League", NewCloseGames.current);
+        
       }
     } catch (error) {
       console.error("Fehler beim Abrufen des Spiels:", error);
@@ -127,7 +133,6 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
         lastLeagueGame = checkGame;
         checkGameId++;
-        console.log("innerLeagueGame", lastLeagueGame);
 
         try {
           checkGame = await fetchCheckGame(leagueId, checkGameId);
@@ -136,28 +141,28 @@ export default function LatestAndFutureGamesProvider({ children }) {
         }
       }
 
-      
       if (checkGame) {
-        const _closeGames = [...closeGames]
-        console.log("Champions League:", _closeGames);
-
         setComingLeagueGame(checkGame);
-        if (checkGame && (_closeGames.filter((match) => match.id == checkGame[0].id).length === 0)) {
+        // Objekt wenn zwei Ids gleich sind, sonst undefined
+        const foundGame = NewCloseGames.current.find(match => match.idEvent == checkGame[0].idEvent)
+        console.log({checkGame, foundGame});
+        
+        if (checkGame && !foundGame) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          _closeGames.push(checkGame);
-          
+          NewCloseGames.current.push(...checkGame);
         }
         setLatestLeagueGame(lastLeagueGame);
-        if (lastLeagueGame && (_closeGames.filter((match) => match.id == lastLeagueGame.id).length === 0)) {
-          _closeGames.push(lastLeagueGame);
+        if (lastLeagueGame && NewCloseGames.find(match => match.id == lastLeagueGame.id)) {
+          // NewCloseGames.current.push(lastLeagueGame);
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
         }
-        console.log("## ## _closeGames:", _closeGames);
-        setCloseGames(_closeGames);
+        // setCloseGames(NewCloseGames);
       }
     } catch (error) {
       console.error("Fehler beim Abrufen des Spiels:", error);
     }
+    console.log("Champions League", NewCloseGames.current);
+    
   };
 
   // ----------
@@ -196,7 +201,6 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
         lastLeagueGame = checkGame;
         checkGameId++;
-        console.log("innerLeagueGame", lastLeagueGame);
 
         try {
           checkGame = await fetchCheckGame(leagueId, checkGameId);
@@ -206,20 +210,17 @@ export default function LatestAndFutureGamesProvider({ children }) {
       }
 
       if (checkGame) {
-        const _closeGames = [...closeGames]
-        console.log("Pokal:", _closeGames);
-
         setComingLeagueGame(checkGame);
-        if (checkGame && (_closeGames.filter((match) => match.id == checkGame[0].id).length === 0)) {
+        if (checkGame && NewCloseGames.current.find(match => match.id == checkGame[0].id)) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          _closeGames.push(checkGame)
+          // NewCloseGames.current.push(...checkGame)
         }
         setLatestLeagueGame(lastLeagueGame);
-        if (lastLeagueGame && (_closeGames.filter((match) => match.id == lastLeagueGame.id).length === 0)) {
+        if (lastLeagueGame && NewCloseGames.current.find(match => match.id == lastLeagueGame.id)) {
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
-          _closeGames.push
+          // NewCloseGames.current.push()
         }
-        setCloseGames(_closeGames)
+        // setCloseGames(NewCloseGames.current)
       }
     } catch (error) {
       console.error("Fehler beim Abrufen des Spiels:", error);
@@ -262,7 +263,6 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
         lastLeagueGame = checkGame;
         checkGameId++;
-        console.log("innerLeagueGame", lastLeagueGame);
 
         try {
           checkGame = await fetchCheckGame(leagueId, checkGameId);
@@ -272,23 +272,18 @@ export default function LatestAndFutureGamesProvider({ children }) {
       }
 
       if (checkGame) {
-        const _closeGames = [...closeGames]
-        console.log("Liga Pokal:", _closeGames);
-        
         setComingLeagueGame(checkGame);
-        if (checkGame && (_closeGames.filter((match) => match.id == checkGame[0].id).length === 0)) {
+        if (checkGame && NewCloseGames.current.find(match => match.id == checkGame[0].id)) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          _closeGames.push(checkGame)
+          // NewCloseGames.current.push(...checkGame)
         }
         setLatestLeagueGame(lastLeagueGame);
-        if (lastLeagueGame && (_closeGames.filter((match) => match.id == lastLeagueGame.id).length === 0)) {
+        if (lastLeagueGame && NewCloseGames.current.find(match => match.id == lastLeagueGame.id)) {
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
-          _closeGames.push(lastLeagueGame)
+          // NewCloseGames.current.push(lastLeagueGame)
         }
-        
-        setCloseGames(_closeGames);
-
       }
+      setCloseGames(NewCloseGames.current);
     } catch (error) {
       console.error("Fehler beim Abrufen des Spiels:", error);
     }

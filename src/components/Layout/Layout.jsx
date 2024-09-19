@@ -43,9 +43,7 @@ export default function Layout() {
   useEffect(() => {
     // Aktuellen Tag:
     const currentDate = new Date().toJSON().slice(0, 10);
-    console.log("Today is", currentDate);
     const savedDate = localStorage.getItem("SavedDate");
-    console.log("Last save at:", savedDate);
 
     const storedPortugalLeagues = localStorage.getItem("PortugalLeagues");
     const storedLeagueTable = localStorage.getItem("LigaPortugal_Tabelle");
@@ -67,14 +65,12 @@ export default function Layout() {
       setLigaPortugal(JSON.parse(storedLeagueTable));
       setLastHomeGames(JSON.parse(storedPastHomeGames));
       setLoading(false);
-      console.log("Datensatz aus dem LocalStorage genommen");
       // console.log(portugalLeagues);
     } else {
       fetchPortugueseLeagues();
       fetchLigaPortugalStandings();
       fetchPastLeagueGames();
       saveDate();
-      console.log("Daten wurden neu gefetched");
       setLoading(false)
     }
   }, []);

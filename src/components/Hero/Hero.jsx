@@ -34,7 +34,7 @@ export default function () {
     const fetchAndProcessData = async () => {
       await checkLeagueGames();
       await checkCLGames();
-      await checkCupGames();
+      // await checkCupGames();
       await checkLeagueCupGames();
     };
 
@@ -52,7 +52,6 @@ export default function () {
   // console.log("Nächstes Liga-Pokal-Spiel", comingLeagueCupGame);
   // console.log("letztes Liga-Pokal-Spiel", latestLeagueCupGame);
 
-  console.log("Alle spiele", closeGames);
 
   // ==========
   // ******* */
