@@ -70,9 +70,12 @@ export default function LatestAndFutureGamesProvider({ children }) {
       
       if (checkGame) {
         console.log({checkGame});
-        
-        setComingLeagueGame(checkGame);        
-        if (NewCloseGames.current.length === 0){
+          setComingLeagueGame(checkGame);
+          // Objekt wenn zwei Ids gleich sind, sonst undefined
+          const foundGame = NewCloseGames.current.find(match => match.idEvent == checkGame[0].idEvent)
+          console.log({checkGame, foundGame});
+          
+          if (checkGame && !foundGame){
           NewCloseGames.current.push(...checkGame)
           
           // NewCloseGames.current.push(...checkGame)
@@ -84,9 +87,9 @@ export default function LatestAndFutureGamesProvider({ children }) {
         //   NewCloseGames.current.push(checkGame)
         // }
         setLatestLeagueGame(lastLeagueGame);
-        if (lastLeagueGame && NewCloseGames.current.find(match => match.id == lastLeagueGame.id)) {
+        if (lastLeagueGame && !foundGame) {
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
-          // NewCloseGames.current.push(lastLeagueGame);
+          NewCloseGames.current.push(lastLeagueGame);
         }
         // setCloseGames(NewCloseGames.current);
         console.log("League", NewCloseGames.current);
@@ -152,7 +155,9 @@ export default function LatestAndFutureGamesProvider({ children }) {
           NewCloseGames.current.push(...checkGame);
         }
         setLatestLeagueGame(lastLeagueGame);
-        if (lastLeagueGame && NewCloseGames.find(match => match.id == lastLeagueGame.id)) {
+        if (lastLeagueGame && !foundGame) {
+          NewCloseGames.current.push(lastLeagueGame);
+
           // NewCloseGames.current.push(lastLeagueGame);
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
         }
@@ -211,16 +216,22 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
       if (checkGame) {
         setComingLeagueGame(checkGame);
-        if (checkGame && NewCloseGames.current.find(match => match.id == checkGame[0].id)) {
+        // Objekt wenn zwei Ids gleich sind, sonst undefined
+        const foundGame = NewCloseGames.current.find(match => match.idEvent == checkGame[0].idEvent)
+        console.log({checkGame, foundGame});
+        
+        if (checkGame && !foundGame) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          // NewCloseGames.current.push(...checkGame)
+          NewCloseGames.current.push(...checkGame);
         }
         setLatestLeagueGame(lastLeagueGame);
-        if (lastLeagueGame && NewCloseGames.current.find(match => match.id == lastLeagueGame.id)) {
+        if (lastLeagueGame && !foundGame) {
+          NewCloseGames.current.push(lastLeagueGame);
+
+          // NewCloseGames.current.push(lastLeagueGame);
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
-          // NewCloseGames.current.push()
         }
-        // setCloseGames(NewCloseGames.current)
+        // setCloseGames(NewCloseGames);
       }
     } catch (error) {
       console.error("Fehler beim Abrufen des Spiels:", error);
@@ -273,15 +284,22 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
       if (checkGame) {
         setComingLeagueGame(checkGame);
-        if (checkGame && NewCloseGames.current.find(match => match.id == checkGame[0].id)) {
+        // Objekt wenn zwei Ids gleich sind, sonst undefined
+        const foundGame = NewCloseGames.current.find(match => match.idEvent == checkGame[0].idEvent)
+        console.log({checkGame, foundGame});
+        
+        if (checkGame && !foundGame) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
-          // NewCloseGames.current.push(...checkGame)
+          NewCloseGames.current.push(...checkGame);
         }
         setLatestLeagueGame(lastLeagueGame);
-        if (lastLeagueGame && NewCloseGames.current.find(match => match.id == lastLeagueGame.id)) {
+        if (lastLeagueGame && !foundGame) {
+          NewCloseGames.current.push(lastLeagueGame);
+
+          // NewCloseGames.current.push(lastLeagueGame);
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
-          // NewCloseGames.current.push(lastLeagueGame)
         }
+        // setCloseGames(NewCloseGames);
       }
       setCloseGames(NewCloseGames.current);
     } catch (error) {
@@ -290,13 +308,14 @@ export default function LatestAndFutureGamesProvider({ children }) {
   };
 
   // ==========
-
+  
   // fetch und filtern vom letzten Spiel:
   async function fetchCheckGame(leagueId, gameId) {
     let allMatches = [];
     try {
+      // const abortController = new AbortController();
       const url = `https://www.thesportsdb.com/api/v1/json/3/eventsround.php?id=${leagueId}&r=${gameId}&s=2024-2025`;
-      const response = await fetch(url);
+      const response = await fetch(url, /* {signal: abortController.signal} */);
 
       if (!response.ok) {
         throw new Error(`Spiel nicht gefunden: ${response.status}`);
@@ -304,6 +323,9 @@ export default function LatestAndFutureGamesProvider({ children }) {
       const result = await response.json();
       allMatches = result;
     } catch (error) {
+      if(error.name === "AbortError") {
+        console.log("Fetch aborted!");
+      }
       console.error("Fehler beim Aufrufen der Daten:", error);
     }
 
@@ -346,6 +368,8 @@ export default function LatestAndFutureGamesProvider({ children }) {
         checkCLGames,
         checkCupGames,
         checkLeagueCupGames,
+        //Abort-Controller:
+        // abortController
       }}
     >
       {children}

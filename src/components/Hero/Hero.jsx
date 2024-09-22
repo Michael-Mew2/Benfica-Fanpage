@@ -26,6 +26,8 @@ export default function () {
     checkCupGames,
     checkLeagueCupGames,
     zipItUp,
+    //Abort-Controller:
+    abortController
   } = useContext(LatestAndFutureGamesContext);
 
   // ----------
@@ -36,9 +38,13 @@ export default function () {
       await checkCLGames();
       // await checkCupGames();
       await checkLeagueCupGames();
+
     };
 
     fetchAndProcessData();
+  //   return ()=>{
+  //     abortController.abort()
+  // }
   }, []);
 
   // ----------
