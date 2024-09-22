@@ -3,6 +3,7 @@
     height: 100vh;
     display: flex;
     /* flex-direction: column; */
+
 }
 .blur {
     background: rgba(165,4,4,0.5);
@@ -18,8 +19,11 @@
     gap: 40px;
 
     h1 {
-        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-        font-size: 72pt;
+        /* font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif; */
+        font-family: veneer-two, sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        font-size: 88pt;
         max-width: 50vw;
         color: white;
         padding-left: 35px;
@@ -28,8 +32,14 @@
     .quickStats {
         border: 2px solid lime;
         height: 15vh;
-        ul li div {
-            
+        ul {
+            display: grid;
+            li {
+                border: 2px solid  cyan;
+                div {
+
+                } 
+            } 
         }
     }
 }

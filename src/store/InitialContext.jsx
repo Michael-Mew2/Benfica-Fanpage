@@ -88,7 +88,7 @@ export default function InitialProvider({ children }) {
 
         const result = await response.json();
         localStorage.setItem("LastHomeGames", JSON.stringify(result));
-        // console.log("Past Games", result);
+        console.log("Past Games", result);
 
         setLastHomeGames(result);
         setIsLoaded(true)

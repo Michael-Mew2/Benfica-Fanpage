@@ -69,11 +69,11 @@ export default function LatestAndFutureGamesProvider({ children }) {
       }
       
       if (checkGame) {
-        console.log({checkGame});
+        // console.log({checkGame});
           setComingLeagueGame(checkGame);
           // Objekt wenn zwei Ids gleich sind, sonst undefined
           const foundGame = NewCloseGames.current.find(match => match.idEvent == checkGame[0].idEvent)
-          console.log({checkGame, foundGame});
+          // console.log({checkGame, foundGame});
           
           if (checkGame && !foundGame){
           NewCloseGames.current.push(...checkGame)
@@ -92,7 +92,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
           NewCloseGames.current.push(lastLeagueGame);
         }
         // setCloseGames(NewCloseGames.current);
-        console.log("League", NewCloseGames.current);
+        // console.log("League", NewCloseGames.current);
         
       }
     } catch (error) {
@@ -107,7 +107,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
     if (!lastHomeGames || !lastHomeGames.results) return;
 
-    const today = new Date();
+    const today = new Date().toJSON().slice(0, 10);
 
     const filteredLeagueGames = lastHomeGames.results.filter(
       (game) => game.idLeague === leagueId
@@ -117,25 +117,27 @@ export default function LatestAndFutureGamesProvider({ children }) {
       (a, b) => new Date(a.dateEvent) - new Date(b.dateEvent)
     );
 
-    // console.log("sorted cl games:", sortedLeagueGames);
+    //  console.log("sorted cl games:", sortedLeagueGames);
 
     let lastLeagueGame = sortedLeagueGames[sortedLeagueGames.length - 1];
 
     let checkGameId =
-      sortedLeagueGames > 0 ? parseInt(lastLeagueGame.intRound) + 1 : "1";
+      sortedLeagueGames.length > 0 ? parseInt(lastLeagueGame.intRound) + 1 : 1;
     // console.log("cl-game-id", checkGameId);
 
     try {
       let checkGame = await fetchCheckGame(leagueId, checkGameId);
-      //   console.log("Gefundenes Spiel:", checkGame);
+        // console.log("Gefundenes Spiel:", checkGame[0].dateEvent);
 
-      while (checkGame && checkGame.dateEvent < today) {
+      while (checkGame && checkGame[0].dateEvent < today) {
         const newLastGames = [...sortedLeagueGames];
         newLastGames.push(checkGame);
-        setLastHomeGames(...lastHomeGames, newLastGames);
+        // setLastHomeGames(...lastHomeGames, newLastGames);
 
         lastLeagueGame = checkGame;
         checkGameId++;
+        // console.log("Championsleague ID", checkGameId);
+        
 
         try {
           checkGame = await fetchCheckGame(leagueId, checkGameId);
@@ -144,11 +146,13 @@ export default function LatestAndFutureGamesProvider({ children }) {
         }
       }
 
+      // console.log("last", lastLeagueGame, "next", checkGame);
+      
       if (checkGame) {
         setComingLeagueGame(checkGame);
         // Objekt wenn zwei Ids gleich sind, sonst undefined
         const foundGame = NewCloseGames.current.find(match => match.idEvent == checkGame[0].idEvent)
-        console.log({checkGame, foundGame});
+        // console.log("Champions League:", {checkGame, foundGame});
         
         if (checkGame && !foundGame) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
@@ -156,7 +160,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
         }
         setLatestLeagueGame(lastLeagueGame);
         if (lastLeagueGame && !foundGame) {
-          NewCloseGames.current.push(lastLeagueGame);
+          NewCloseGames.current.push(...lastLeagueGame);
 
           // NewCloseGames.current.push(lastLeagueGame);
           // setCloseGames((prevGames) => [...prevGames, lastLeagueGame]);
@@ -166,7 +170,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
     } catch (error) {
       console.error("Fehler beim Abrufen des Spiels:", error);
     }
-    console.log("Champions League", NewCloseGames.current);
+    // console.log("Champions League", NewCloseGames.current);
     
   };
 
@@ -177,7 +181,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
     if (!lastHomeGames || !lastHomeGames.results) return;
 
-    const today = new Date();
+    const today = new Date().toJSON().slice(0, 10);
 
     const filteredLeagueGames = lastHomeGames.results.filter(
       (game) => game.idLeague === leagueId
@@ -192,17 +196,17 @@ export default function LatestAndFutureGamesProvider({ children }) {
     let lastLeagueGame = sortedLeagueGames[sortedLeagueGames.length - 1];
 
     let checkGameId =
-      sortedLeagueGames > 0 ? parseInt(lastLeagueGame.intRound) + 1 : "1";
+      sortedLeagueGames > 0 ? parseInt(lastLeagueGame.intRound) + 1 : 0;
     // console.log("cl-game-id", checkGameId);
 
     try {
       let checkGame = await fetchCheckGame(leagueId, checkGameId);
       //   console.log("Gefundenes Spiel:", checkGame);
 
-      while (checkGame && checkGame.dateEvent < today) {
+      while (checkGame && checkGame[0].dateEvent < today) {
         const newLastGames = [...sortedLeagueGames];
         newLastGames.push(checkGame);
-        setLastHomeGames(...lastHomeGames, newLastGames);
+        // setLastHomeGames(...lastHomeGames, newLastGames);
 
         lastLeagueGame = checkGame;
         checkGameId++;
@@ -218,7 +222,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
         setComingLeagueGame(checkGame);
         // Objekt wenn zwei Ids gleich sind, sonst undefined
         const foundGame = NewCloseGames.current.find(match => match.idEvent == checkGame[0].idEvent)
-        console.log({checkGame, foundGame});
+        // console.log({checkGame, foundGame});
         
         if (checkGame && !foundGame) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
@@ -245,7 +249,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
     if (!lastHomeGames || !lastHomeGames.results) return;
 
-    const today = new Date();
+    const today = new Date().toJSON().slice(0, 10);
 
     const filteredLeagueGames = lastHomeGames.results.filter(
       (game) => game.idLeague === leagueId
@@ -260,7 +264,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
     let lastLeagueGame = sortedLeagueGames[sortedLeagueGames.length - 1];
 
     let checkGameId =
-      sortedLeagueGames > 0 ? parseInt(lastLeagueGame.intRound) + 1 : "0";
+      sortedLeagueGames > 0 ? parseInt(lastLeagueGame.intRound) + 1 : 0;
     // console.log("cl-game-id", checkGameId);
 
     try {
@@ -270,7 +274,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
       while (checkGame && checkGame.dateEvent < today) {
         const newLastGames = [...sortedLeagueGames];
         newLastGames.push(checkGame);
-        setLastHomeGames(...lastHomeGames, newLastGames);
+        // setLastHomeGames(...lastHomeGames, newLastGames);
 
         lastLeagueGame = checkGame;
         checkGameId++;
@@ -286,7 +290,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
         setComingLeagueGame(checkGame);
         // Objekt wenn zwei Ids gleich sind, sonst undefined
         const foundGame = NewCloseGames.current.find(match => match.idEvent == checkGame[0].idEvent)
-        console.log({checkGame, foundGame});
+        // console.log({checkGame, foundGame});
         
         if (checkGame && !foundGame) {
           // setCloseGames((prevGames) => [...prevGames, checkGame[0]]);
@@ -363,6 +367,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
         setLatestLeagueCupGame,
         // Alle spiele:
         closeGames,
+        setCloseGames,
         //Funktionen:
         checkLeagueGames,
         checkCLGames,

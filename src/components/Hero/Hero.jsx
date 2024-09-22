@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { InitialContext } from "../../store/InitialContext";
 import { LatestAndFutureGamesContext } from "../../store/LatestAndFutureGamesContext";
+import styles from "./Hero.module.css";
 
 // ----------
 
@@ -27,25 +28,52 @@ export default function () {
     checkLeagueCupGames,
     zipItUp,
     //Abort-Controller:
-    abortController
+    abortController,
   } = useContext(LatestAndFutureGamesContext);
 
   // ----------
+
+  const [sortedGames, setSortedGames] = useState([]);
 
   useEffect(() => {
     const fetchAndProcessData = async () => {
       await checkLeagueGames();
       await checkCLGames();
-      // await checkCupGames();
+      await checkCupGames();
       await checkLeagueCupGames();
-
     };
 
     fetchAndProcessData();
-  //   return ()=>{
-  //     abortController.abort()
-  // }
+    localStorage.setItem("Prev_and_Next_Games", JSON.stringify(closeGames))
+
+    //   return ()=>{
+    //     abortController.abort()
+    // }
   }, []);
+
+  useEffect(() => {
+    sortGames();
+  }, [closeGames]);
+  
+  const sortGames = async () => {
+    const games = [...closeGames];
+    console.log("pre-sorted:", games);
+
+    const compareDates = (a, b) => {
+      const dateA = new Date(a.date);
+      const dateB = new Date(b.date);
+
+      if (dateA < dateB) return -1;
+      if (dateA > dateB) return 1;
+      return 0;
+    };
+
+    const _sortedGames = games.sort(compareDates);
+
+    setSortedGames(_sortedGames);
+
+    console.log("sorted:", _sortedGames);
+  };
 
   // ----------
 
@@ -58,29 +86,29 @@ export default function () {
   // console.log("Nächstes Liga-Pokal-Spiel", comingLeagueCupGame);
   // console.log("letztes Liga-Pokal-Spiel", latestLeagueCupGame);
 
-
   // ==========
   // ******* */
   // ==========
 
   return (
-    <div>
-      <div className="blur">
+    <div className={styles.hero}>
+      <div className={styles.blur}>
         <h1>Willkommen im roten Inferno</h1>
-      </div>
-      <div className="quickStats">
-        <ul>
-          <li>
-            {closeGames.map((game, i) => (
-              <div key={i}>
-                <h2>{game.strEvent}</h2>
-                <p>
-                  {game.strLeague} Spieltag: {game.intRound}
-                </p>
-              </div>
+        <div className={styles.quickStats}>
+          <ul>
+            {sortedGames.map((game, i) => (
+              <li key={i}>
+                <div>
+                  <h2>{game.strEvent}</h2>
+                  <p>
+                    {game.strLeague} Spieltag: {game.intRound}
+                  </p>
+                  <p>{game.dateEvent}</p>
+                </div>
+              </li>
             ))}
-          </li>
-        </ul>
+          </ul>
+        </div>
       </div>
     </div>
   );
