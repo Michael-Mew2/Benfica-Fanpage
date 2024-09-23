@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { InitialContext } from "../../store/InitialContext";
 import { LatestAndFutureGamesContext } from "../../store/LatestAndFutureGamesContext";
 import styles from "./Hero.module.css";
+import { h3, img } from "framer-motion/client";
 
 // ----------
 
@@ -35,6 +36,8 @@ export default function () {
 
   const [sortedGames, setSortedGames] = useState([]);
 
+  // const [leagueId, setLeagueId] = useState({id: url})
+
   useEffect(() => {
     const fetchAndProcessData = async () => {
       await checkLeagueGames();
@@ -44,7 +47,7 @@ export default function () {
     };
 
     fetchAndProcessData();
-    localStorage.setItem("Prev_and_Next_Games", JSON.stringify(closeGames))
+    localStorage.setItem("Prev_and_Next_Games", JSON.stringify(closeGames));
 
     //   return ()=>{
     //     abortController.abort()
@@ -54,7 +57,7 @@ export default function () {
   useEffect(() => {
     sortGames();
   }, [closeGames]);
-  
+
   const sortGames = async () => {
     const games = [...closeGames];
     console.log("pre-sorted:", games);
@@ -77,6 +80,38 @@ export default function () {
 
   // ----------
 
+  function getGameStatusClass(dateString) {
+    const gameDate = new Date(dateString);
+    const today = new Date();
+
+    gameDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    // console.log(gameDate, today);
+
+    if (gameDate > today) {
+      return styles.futureGames;
+    } else if (gameDate < today) {
+      return styles.pastGames;
+    } else {
+      return styles.todayGame;
+    }
+  }
+
+  function checkIfToday(dateString) {
+    const gameDate = new Date(dateString);
+    const today = new Date();
+
+    gameDate.setHours(0, 0, 0, 0);
+    today.setHours(0, 0, 0, 0);
+    // console.log(gameDate, today);
+
+    if (gameDate.getTime() === today.getTime()) {
+      return "Heute ";
+    } else {
+      return `Am ${gameDate.getDate()}.${gameDate.getMonth() + 1}. `;
+    }
+  }
+
   // console.log("Nächstes Spiel:", comingLeagueGame);
   // console.log("Letztes Spiel:", latestLeagueGame);
   // console.log("Nächstes CL-Spiel", comingCLGame);
@@ -98,12 +133,76 @@ export default function () {
           <ul>
             {sortedGames.map((game, i) => (
               <li key={i}>
-                <div>
-                  <h2>{game.strEvent}</h2>
-                  <p>
-                    {game.strLeague} Spieltag: {game.intRound}
-                  </p>
-                  <p>{game.dateEvent}</p>
+                <div
+                  className={`${styles.gameContainer} ${getGameStatusClass(
+                    game.dateEvent
+                  )}`}
+                >
+                  <div className={styles.leagueImg}>
+                    {(() => {
+                      switch (game.idLeague) {
+                        case "4344":
+                          return (
+                            <img
+                              src="src/assets/Liga_Portugal.svg"
+                              alt="Liga Portugal Logo"
+                            />
+                          );
+                        case "4509":
+                          return (
+                            <img
+                              src="src/assets/allianzcup_white.png"
+                              alt="Allianz Cup"
+                              style={{ filter: "invert(100%)" }}
+                            />
+                          );
+                        case "4480":
+                          return (
+                            <img
+                              src="src/assets/UEFA_Champions_League_logo_no_text_great.svg"
+                              alt="Liga Portugal Logo"
+                            />
+                          );
+
+                        default:
+                          return <p>{game.strLeague}</p>;
+                      }
+                    })()}
+                  </div>
+                  {game.strHomeTeam === "Benfica" ? (
+                    <div className={styles.opponent}>
+                      <h3>vs.</h3>
+                      <h3>{game.strAwayTeam}</h3>
+                    </div>
+                  ) : (
+                    <div className={styles.opponent}>
+                      <h3>@</h3>
+                      <h3>{game.strHomeTeam}</h3>
+                    </div>
+                  )}
+                  {game.intHomeScore ? (
+                    <div className={styles.score}>
+                      <h3>
+                        {game.intHomeScore} : {game.intAwayScore}
+                      </h3>
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  {!game.intHomeScore ? (
+                    <h4>
+                      {checkIfToday(game.dateEvent)}
+                      {game.strTime.slice(0, 2) === "00"
+                        ? "(Uhrzeit nicht bekannt)"
+                        : "um " +
+                          (parseInt(game.strTime.slice(0, 2)) + 2).toString()}
+                      {game.strTime.slice(0, 2) === "00"
+                        ? ""
+                        : ":" + game.strTime.slice(3, 5)}{" "}
+                    </h4>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </li>
             ))}

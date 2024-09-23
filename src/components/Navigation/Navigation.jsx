@@ -7,10 +7,14 @@ export default function Navigation() {
     <div className={styles.navigation}>
       <ul>
         <li>
-          <NavLink to="/">Home</NavLink>
+          <NavLink to="/">Start</NavLink>
         </li>
         <li>
-          <NavLink to="/about">About</NavLink>
+          {/* <NavLink to="/about">About</NavLink> */}
+        </li>
+
+        <li>
+          <NavLink to="maleateam">Das Team</NavLink>
         </li>
       </ul>
     </div>

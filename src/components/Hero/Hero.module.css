@@ -6,7 +6,7 @@
 
 }
 .blur {
-    background: rgba(165,4,4,0.5);
+    background: #e830308a;
     -webkit-backdrop-filter: blur(5px);
     backdrop-filter: blur(8px);
     /* border: 1px solid rgba(165,4,4,0.25); */
@@ -23,23 +23,93 @@
         font-family: veneer-two, sans-serif;
         font-weight: 400;
         font-style: normal;
-        font-size: 88pt;
+        font-size: 102pt;
         max-width: 50vw;
         color: white;
         padding-left: 35px;
     }
 
     .quickStats {
-        border: 2px solid lime;
-        height: 15vh;
+        height: fit-content;
+        /* border: 2px solid lime; */
         ul {
-            display: grid;
+            display: flex;
+            flex-direction: row;
+            /* gap: 20px; */
+            /* flex-wrap: wrap; */
+            justify-content: space-evenly;
+            align-items: stretch;
             li {
-                border: 2px solid  cyan;
-                div {
+                width: 100%;
+                height: 15vh;
+                list-style: none;
+                flex-grow: 1;
+                flex-shrink: 1;
+                /* border: 2px solid  cyan; */
+                .gameContainer {
+                    height: fit-content;
+                    background-color: white;
+                    /* border-radius: 10px 10px 0 0; */
+                    padding: 20px 35px;
+                    position: relative;
+                    
+                    .leagueImg {
+                        position: absolute;
+                        top: 20px;
+                        right: 35px;
+                        height: fit-content;
+                        padding: 0;
+                        z-index: 2;
+                        /* padding: 20px 35px; */
+                        
 
+                        img {
+                            height: 30px;
+                            width: auto;
+                        }
+                    }
+                    
+                    .opponent {
+                        padding: 0;
+                        font-family: "pressio-compressed", sans-serif;
+                        font-weight: 600;
+                        font-style: normal;
+                        font-size: 20pt;
+
+                    }
+
+                    .score {
+                        padding: 0;
+                        font-family: "pressio-compressed", sans-serif;
+                        font-weight: 600;
+                        font-style: normal;
+                        font-size: 18pt;
+                    }
+
+                    h4 {
+                        font-family: "pressio-compressed", sans-serif;
+                        font-weight: 300;
+                        font-size: 18pt;
+                        margin-top: 10px;
+                    }
                 } 
-            } 
-        }
+
+                .pastGames {
+                    background-color: lightgray;
+                    color: rgb(134, 134, 134);
+
+                    .leagueImg {
+                        img svg{
+                                fill: darkgray;
+                        }
+                    }
+                }
+
+                .todayGame {
+                    background-color: #e83030;
+                    color: white;
+                }
+            }
+        } 
     }
 }

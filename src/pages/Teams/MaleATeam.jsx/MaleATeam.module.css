@@ -1,0 +1,148 @@
+.loadingMessage {
+    background-color: #e83030;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100%;
+
+    p {
+        font-size: 60pt;
+        font-family: veneer-three, sans-serif;
+        font-weight: 400;
+        font-style: normal;
+        color: white;
+    }
+}
+
+.main {
+    background-image: url('../../../assets/team_hintergrund.jpg');
+    height: 100%;
+    width: 100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .teamHero {
+        height: 100vh;
+        width: 100%;
+        /* From https://css.glass */
+        background: rgba(29, 29, 29, 0.39);
+
+        /* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        /* ------- -------- */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        h1 {
+            font-family: veneer-three, sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 102pt;
+            max-width: 50vw;
+            color: white;
+            padding-left: 35px;
+        }
+    }
+
+    .teamMembers {
+        background: rgba(29, 29, 29, 0.39);
+
+        /* box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1); */
+        backdrop-filter: blur(8px);
+        -webkit-backdrop-filter: blur(8px);
+        padding: 35px;
+
+        h2 {
+            font-family: veneer-two, sans-serif;
+            font-weight: 400;
+            font-style: normal;
+            font-size: 80pt;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .playerList {
+            justify-content: flex-start;
+            align-content: flex-start;
+            display: flex;
+            margin-bottom: 100px;
+            flex-wrap: wrap;
+            gap: 150px;
+            .player {
+                display: flex;
+                flex-direction: column;
+                justify-content: flex-end;
+                width: 500px;
+                height: 500px;
+                position: relative;
+                outline: 2px solid white;
+                
+                .playerBackground {
+                    background-color: rgba(0, 0, 0, 0.157);
+                    height: 100%;
+                    width: 100%;
+                    rotate: 10deg;
+                    position: absolute;
+                    z-index: -3;
+                    border: 2px solid rgba(0, 0, 0, 0.204);
+                }
+
+                h3 {
+                    font-family: sporty-pro-inline, sans-serif;
+                    font-weight: 500;
+                    font-style: normal;
+                    font-size: 400px;
+                    color: white;
+                    position: absolute;
+                    left: -18px;
+                    z-index: -2;
+                }
+                
+                img {
+                    width: 450px;
+                    position: absolute;
+                    right: 10px; 
+                    z-index: -1;                  
+                }
+
+                .playerInfo {
+                    background: #ea9916;
+                    rotate: -5deg;
+                    position: absolute;
+                    bottom: -50px;
+                    width: 100%;
+                    padding: 10px;
+
+                    h4 {
+                        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                        font-size: 32pt;
+                        width: 80%;
+                    }
+
+                    h5 {
+                        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                        font-size: 32pt;
+                        position: absolute;
+                        top: 10px;
+                        right: 10px;
+                    }
+
+                    p {
+                        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                        font-size: 14pt;
+                        margin-bottom: 5px;
+
+                        span {
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
