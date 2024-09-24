@@ -55,9 +55,9 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
     try {
       let checkGame = await fetchCheckGame(leagueId, checkGameId);
-      //   console.log("Gefundenes Spiel:", checkGame);
+        console.log("Gefundenes Spiel:", checkGame, checkGame[0].dateEvent);
 
-      while (checkGame && checkGame.dateEvent < today) {
+      while (checkGame && checkGame[0].dateEvent < today) {
         const newLastGames = [...sortedLeagueGames];
         newLastGames.push(checkGame);
         setLastHomeGames(...lastHomeGames, newLastGames);
@@ -69,11 +69,11 @@ export default function LatestAndFutureGamesProvider({ children }) {
       }
       
       if (checkGame) {
-        // console.log({checkGame});
+        console.log({checkGame});
           setComingLeagueGame(checkGame);
           // Objekt wenn zwei Ids gleich sind, sonst undefined
           const foundGame = NewCloseGames.current.find(match => match.idEvent == checkGame[0].idEvent)
-          // console.log({checkGame, foundGame});
+          console.log({checkGame, foundGame});
           
           if (checkGame && !foundGame){
           NewCloseGames.current.push(...checkGame)
@@ -96,7 +96,7 @@ export default function LatestAndFutureGamesProvider({ children }) {
         
       }
     } catch (error) {
-      console.error("Fehler beim Abrufen des Spiels:", error);
+      console.error("Fehler beim Abrufen des Spiels (Liga):", error);
     }
   };
 
