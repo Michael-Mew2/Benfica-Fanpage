@@ -16,7 +16,7 @@
 }
 
 .main {
-    background-image: url('../../../assets/team_hintergrund.jpg');
+    background-image: url('/Backgrounds/Main/team_hintergrund.jpg');
     height: 100%;
     width: 100%;
     background-attachment: fixed;

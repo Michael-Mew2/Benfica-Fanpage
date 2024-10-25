@@ -27,9 +27,9 @@ export default function LatestAndFutureGamesProvider({ children }) {
 
   const NewCloseGames = useRef([]);
 
-  useEffect(() => {
-    // console.log("## Close Games:", closeGames);
-}, [closeGames])
+//   useEffect(() => {
+//     // console.log("## Close Games:", closeGames);
+// }, [closeGames])
 
   // ----------
   // Primeira Liga:
